@@ -2,6 +2,9 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/kpn-store",
   "lib": {
-    "entryFile": "src/projects.ts"
+    "entryFile": "src/projects.ts",
+    "umdModuleIds": {
+      "@ngrx/store": "store"
+    }
   }
 }

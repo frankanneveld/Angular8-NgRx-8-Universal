@@ -4,7 +4,8 @@
   "lib": {
     "entryFile": "src/public-api.ts",
     "umdModuleIds": {
-      "@ngrx/store": "store"
+      "@ngrx/store": "store",
+      "@ngrx/effects": "effects"
     }
   }
 }
