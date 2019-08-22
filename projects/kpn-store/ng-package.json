@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../dist/store",
+  "dest": "../../dist/kpn-store",
   "lib": {
-    "entryFile": "src/store.ts"
+    "entryFile": "src/projects.ts"
   }
 }

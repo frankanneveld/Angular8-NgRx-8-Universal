@@ -97,33 +97,33 @@
         }
       }
     },
-    "store": {
+    "kpn-store": {
       "projectType": "library",
-      "root": "projects/store",
-      "sourceRoot": "projects/store/src",
+      "root": "projects/kpn-store",
+      "sourceRoot": "projects/kpn-store/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/store/tsconfig.lib.json",
-            "project": "projects/store/ng-package.json"
+            "tsConfig": "projects/kpn-store/tsconfig.lib.json",
+            "project": "projects/kpn-store/ng-package.json"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/store/src/test.ts",
-            "tsConfig": "projects/store/tsconfig.spec.json",
-            "karmaConfig": "projects/store/karma.conf.js"
+            "main": "projects/kpn-store/src/test.ts",
+            "tsConfig": "projects/kpn-store/tsconfig.spec.json",
+            "karmaConfig": "projects/kpn-store/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/store/tsconfig.lib.json",
-              "projects/store/tsconfig.spec.json"
+              "projects/kpn-store/tsconfig.lib.json",
+              "projects/kpn-store/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

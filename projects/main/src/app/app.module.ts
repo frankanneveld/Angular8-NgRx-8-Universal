@@ -23,7 +23,8 @@ import { environment } from '../environments/environment';
       }
     }),
     EffectsModule.forRoot([AppEffects]),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+
   ],
   providers: [],
   bootstrap: [AppComponent]

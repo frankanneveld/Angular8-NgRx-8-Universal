@@ -15,8 +15,8 @@
     "annotateForClosureCompiler": true,
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
-    "fullTemplateTypeCheck": false,
-    "strictInjectionParameters": false,
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
     "enableResourceInlining": true
   },
   "exclude": [
