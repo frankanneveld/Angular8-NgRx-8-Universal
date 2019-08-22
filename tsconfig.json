@@ -17,7 +17,11 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@kpn-store": ["projects/kpn-store/src/projects.ts"],
+      "@frank-store": ["projects/frank-store/src/public-api.ts"]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

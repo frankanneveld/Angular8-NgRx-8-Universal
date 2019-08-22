@@ -9,6 +9,9 @@ import { AppEffects } from './app.effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 
+import * as fromKpnStore from '@kpn-store';
+import * as fromFrankStore from '@frank-store';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -24,7 +27,8 @@ import { environment } from '../environments/environment';
     }),
     EffectsModule.forRoot([AppEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-
+    fromKpnStore.KpnStoreModule,
+    fromFrankStore.FrankStoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

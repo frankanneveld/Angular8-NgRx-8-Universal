@@ -131,6 +131,41 @@
           }
         }
       }
+    },
+    "frank-store": {
+      "projectType": "library",
+      "root": "projects/frank-store",
+      "sourceRoot": "projects/frank-store/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/frank-store/tsconfig.lib.json",
+            "project": "projects/frank-store/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/frank-store/src/test.ts",
+            "tsConfig": "projects/frank-store/tsconfig.spec.json",
+            "karmaConfig": "projects/frank-store/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/frank-store/tsconfig.lib.json",
+              "projects/frank-store/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
    },
   "defaultProject": "main"
