@@ -1,6 +1,10 @@
 /*
  * Public API Surface of kpn-store
  */
+
+// Modules
 export * from './lib/kpn-store.module';
-// export * from './lib/kpn-store.service';
-// export * from './lib/kpn-store.component';
+
+// Services
+export * from './lib/kpn-store.service';
+

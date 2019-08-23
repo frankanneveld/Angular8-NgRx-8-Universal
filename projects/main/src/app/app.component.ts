@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CopyService } from '@kpn-store';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styles: []
 })
 export class AppComponent {
+
+  constructor(private copyService: CopyService) {
+    const copy = copyService.getAll();
+    console.log(copy);
+  }
 
 }
