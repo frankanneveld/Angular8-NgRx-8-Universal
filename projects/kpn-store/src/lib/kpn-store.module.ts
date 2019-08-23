@@ -6,12 +6,14 @@ import {HttpClientModule} from '@angular/common/http';
 
 export const reducers: ActionReducerMap<any> = {};
 
+const copyProviders = [CopyService, CopyTransferkeys];
+const bundleProviders = [];
+
 @NgModule({
   imports: [
     HttpClientModule,
     StoreModule.forFeature('KPN', reducers)
-    // import all the store modules here as array
   ],
-  providers: [CopyService, CopyTransferkeys],
+  providers: [...copyProviders, ...bundleProviders], // etc ...
 })
 export class KpnStoreModule { }

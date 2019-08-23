@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, Inject, PLATFORM_ID} from '@angular/core';
 import { CopyService } from '@kpn-store';
+import {isPlatformBrowser} from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -7,10 +8,10 @@ import { CopyService } from '@kpn-store';
   styles: []
 })
 export class AppComponent {
-
-  constructor(private copyService: CopyService) {
-    const copy = copyService.getAll();
-    console.log(copy);
+  constructor(@Inject(PLATFORM_ID) private platformId: string, private copyService: CopyService) {
+    if (isPlatformBrowser(platformId) && !copyService.hasLoadFromServer) {
+      const copy$ = copyService.getAll();
+      copy$.subscribe(console.log);
+    }
   }
-
 }

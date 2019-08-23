@@ -1,4 +1,4 @@
-import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {makeStateKey, TransferState} from '@angular/platform-browser';
 
 
@@ -26,7 +26,7 @@ export class CopyTransferkeys {
   }
 
   // LOAD_FROM_SERVER
-  public get hasServerLoadKey(): boolean {
+  public get hasLoadFromServer(): boolean {
     return this.transferState.hasKey(LOAD_FROM_SERVER);
   }
 
@@ -46,7 +46,6 @@ export class CopyTransferkeys {
   }
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId,
     private transferState: TransferState) {
   }
 }
