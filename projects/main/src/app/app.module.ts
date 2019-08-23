@@ -21,7 +21,7 @@ export const metaReducers: MetaReducer<State>[] = !environment.production ? [] :
     AppComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     StoreModule.forRoot(reducers, {
       metaReducers,
       runtimeChecks: {
