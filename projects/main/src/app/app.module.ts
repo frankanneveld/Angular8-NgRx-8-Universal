@@ -1,11 +1,10 @@
 import {BrowserModule, BrowserTransferStateModule} from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { AppComponent } from './app.component';
-import { ActionReducerMap, MetaReducer, StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
-
+import {NgModule} from '@angular/core';
+import {AppComponent} from './app.component';
+import {ActionReducerMap, MetaReducer, StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
 // Lib imports
 import * as fromKpnStore from '@kpn-store';
 import * as fromFrankStore from '@frank-store';
@@ -37,4 +36,5 @@ export const metaReducers: MetaReducer<State>[] = !environment.production ? [] :
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+}

@@ -6,5 +6,5 @@
 export * from './lib/kpn-store.module';
 
 // Services
-export * from './lib/kpn-store.service';
+export * from './copy/copy.service';
 
