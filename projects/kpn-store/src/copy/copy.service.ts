@@ -1,14 +1,20 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
-import {createAction, props, Store} from '@ngrx/store';
+import {createAction, createFeatureSelector, createSelector, props, select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {CopyTransferkeys} from './copy.transferkeys';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {isPlatformServer} from '@angular/common';
+import {CopyState} from './copy.reducers';
 
 export class CopyActions {
   static copyGetAll = createAction('[Copy Get All]');
   static copySuccess = createAction('[Copy Success]', props<{ copy: any }>());
+}
+
+export class CopySelector {
+  static getCopyState = createFeatureSelector<CopyState>('kpn');
+  static selectAllCopy = createSelector(CopySelector.getCopyState, (state: CopyState) => state.keys);
 }
 
 
@@ -27,13 +33,10 @@ export class CopyService {
               private store: Store<any>) {
   }
 
-  // public setCopy(copyItems: any) {
-  //   // this.store.dispatch(copySuccess(copyItems));
-  // }
-  //
-  // public get copySubscription(): Observable<any> {
-  //   return of(EMPTY); // this.store.pipe(select(copy.selectFeatureCopy));
-  // }
+  public get allCopySubscription(): Observable<any> {
+    return  this.store.pipe(select(CopySelector.selectAllCopy));
+  }
+
 
   public getAllCopy() {
     if (isPlatformServer(this.platformId)) {
