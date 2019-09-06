@@ -15,8 +15,4 @@ import {ModuleMapLoaderModule} from '@nguniversal/module-map-ngfactory-loader';
   bootstrap: [AppComponent]
 })
 export class AppServerModule {
-  // constructor(private copyService: CopyService) {
-  //   const copy$ = copyService.getAll();
-  //   copy$.subscribe(console.log);
-  // }
 }

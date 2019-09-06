@@ -39,6 +39,7 @@ export class CopyService {
 
 
   public getAllCopy() {
+    return null;
     if (isPlatformServer(this.platformId)) {
       this.copyFromApi.subscribe(copy => this.copyTransferkeys.copyTransferKey = copy);
     } else if (this.copyTransferkeys.hasCopyTransferKey) {
