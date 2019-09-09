@@ -1,5 +1,5 @@
 import {Action, createReducer, on} from '@ngrx/store';
-import {StoreActions} from '../../lib-store-b/src/lib/lib-store-b.service';
+import {StoreActions} from '..//src/lib/lib-store-b.service';
 
 
 
