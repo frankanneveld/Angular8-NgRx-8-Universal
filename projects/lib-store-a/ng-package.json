@@ -1,0 +1,7 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/lib-store-a",
+  "lib": {
+    "entryFile": "src/projects/main/src/app/components.ts"
+  }
+}

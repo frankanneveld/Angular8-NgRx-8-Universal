@@ -19,10 +19,39 @@
       "dom"
     ],
     "paths": {
-      "frank-store": ["dist/frank-store"],
-      "kpn-store": ["dist/kpn-store"],
-      "@kpn-store": ["projects/kpn-store/src/projects.ts"],
-      "@frank-store": ["projects/frank-store/src/public-api.ts"]
+      "frank-store": [
+        "dist/frank-store"
+      ],
+      "kpn-store": [
+        "dist/kpn-store"
+      ],
+      "@kpn-store": [
+        "projects/kpn-store/src/projects.ts"
+      ],
+      "@frank-store": [
+        "projects/frank-store/src/public-api.ts"
+      ],
+      "lib-store-b": [
+        "dist/lib-store-b"
+      ],
+      "lib-store-b/*": [
+        "dist/lib-store-b/*"
+      ],
+      "@lib-store-b": [
+        "projects/lib-store-b/src/public-api"
+      ],
+      "lib-store-a": [
+        "dist/lib-store-a"
+      ],
+      "lib-store-a/*": [
+        "dist/lib-store-a/*"
+      ],
+      "lib-store-c": [
+        "dist/lib-store-c"
+      ],
+      "lib-store-c/*": [
+        "dist/lib-store-c/*"
+      ]
     }
   },
   "angularCompilerOptions": {

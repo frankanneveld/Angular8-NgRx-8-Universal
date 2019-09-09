@@ -14,7 +14,7 @@ import {ComponentBComponent} from './components/component-b/component-b.componen
 
 // Library Imports
 import * as fromFrankStore from '@frank-store';
-import * as fromKpnStore from '@kpn-store';
+import * as fromLibStoreBModule from '@lib-store-b';
 
 // export const reducers: ActionReducerMap<{[key: string]: any}> = {};
 export const metaReducers: MetaReducer<{[key: string]: any}>[] = !environment.production ? [] : [];
@@ -40,7 +40,8 @@ export const metaReducers: MetaReducer<{[key: string]: any}>[] = !environment.pr
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     fromFrankStore.FrankStoreModule,
-    fromKpnStore.KpnStoreModule
+    fromLibStoreBModule.LibStoreBModule
+    // fromKpnStore.KpnStoreModule
   ],
   bootstrap: [AppComponent],
 })
