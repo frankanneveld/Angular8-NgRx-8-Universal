@@ -1,12 +1,26 @@
-import { NgModule } from '@angular/core';
-import { LibStoreAComponent } from './lib-store-a.component';
+import {NgModule} from '@angular/core';
+import {HttpClientModule} from '@angular/common/http';
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
 
+
+import {reducer} from '../../store/reducers';
+import {Effects} from '../../store/effects';
+import {Transferkeys} from '../../store/transferkeys';
+import {forFeatureName, StoreService} from './lib-store-a.service';
 
 
 @NgModule({
-  declarations: [LibStoreAComponent],
   imports: [
+    HttpClientModule,
+    StoreModule.forFeature(forFeatureName, reducer),
+    EffectsModule.forFeature([Effects])
   ],
-  exports: [LibStoreAComponent]
+  providers: [StoreService, Transferkeys]
 })
-export class LibStoreAModule { }
+export class LibStoreAModule {
+
+  constructor(private storeService: StoreService) {
+    storeService.getAll();
+  }
+}
