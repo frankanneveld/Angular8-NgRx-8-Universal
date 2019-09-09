@@ -26,6 +26,6 @@ export class Effects implements OnInitEffects {
   constructor(private actions$: Actions, private storeService: StoreService) {}
 
   ngrxOnInitEffects(): Action {
-    return {type: '[STORE B Effects]: Init'};
+    return {type: '[STORE A Effects]: Init'};
   }
 }

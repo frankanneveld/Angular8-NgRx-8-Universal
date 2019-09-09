@@ -19,7 +19,7 @@ export class StoreActions {
 
 export class StoreSelector {
   static getState   = createFeatureSelector<State>(forFeatureName);
-  static selectAll  = createSelector(StoreSelector.getState, (state: State) => state.keys);
+  static selectAll  = createSelector(StoreSelector.getState, (state: State) => state.data);
 }
 
 @Injectable()
@@ -30,7 +30,7 @@ export class StoreService {
     return this.http.get('https://raw.githubusercontent.com/frankanneveld/FakeApi/master/componentC.json');
   }
 
-  public get allFrankSubscription(): Observable<any> {
+  public get allSubscription(): Observable<any> {
     return  this.store.pipe(select(StoreSelector.selectAll));
   }
 

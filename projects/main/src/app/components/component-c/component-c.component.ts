@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {StoreService} from '@lib-store-c';
 
 @Component({
   selector: 'app-component-c',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ComponentCComponent implements OnInit {
 
-  constructor() { }
+  constructor(public storeService: StoreService) {
+    this.storeService.getAll();
+  }
 
   ngOnInit() {
+    this.storeService.allSubscription.subscribe( response => {
+        if (response) {
+          // this.response = response;
+          console.log(response);
+        }
+      });
   }
 
 }

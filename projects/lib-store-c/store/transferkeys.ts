@@ -1,23 +1,23 @@
 import {Injectable} from '@angular/core';
 import {makeStateKey, TransferState} from '@angular/platform-browser';
 
-export const FRANK_TRANSFER_KEY = makeStateKey<any>('FRANK_TRANSFER_KEY');
+export const STORE_C_TRANSFER_KEY = makeStateKey<any>('STORE_C_TRANSFER_KEY');
 
 @Injectable()
 export class Transferkeys {
   public get hasTransferKey(): boolean {
-    return this.transferState.hasKey(FRANK_TRANSFER_KEY);
+    return this.transferState.hasKey(STORE_C_TRANSFER_KEY);
   }
 
   public set transferKey(data: any) {
-    this.transferState.set(FRANK_TRANSFER_KEY, data);
+    this.transferState.set(STORE_C_TRANSFER_KEY, data);
   }
 
   public get transferKey(): any {
     let data: any;
-    if (this.transferState.hasKey(FRANK_TRANSFER_KEY)) {
-      data = this.transferState.get<any>(FRANK_TRANSFER_KEY, {});
-      this.transferState.remove(FRANK_TRANSFER_KEY);
+    if (this.transferState.hasKey(STORE_C_TRANSFER_KEY)) {
+      data = this.transferState.get<any>(STORE_C_TRANSFER_KEY, {});
+      this.transferState.remove(STORE_C_TRANSFER_KEY);
     } else {
       data = null;
     }

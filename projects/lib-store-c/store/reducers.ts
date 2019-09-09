@@ -5,11 +5,11 @@ import {StoreActions} from '../src/lib/lib-store-c.service';
 
 
 export interface State {
-  keys: { [key: string]: any };
+  data: { [key: string]: any };
 }
 
 export const initialState: State = {
-  keys: null
+  data: null
 };
 
 const reducerCreate = createReducer(
