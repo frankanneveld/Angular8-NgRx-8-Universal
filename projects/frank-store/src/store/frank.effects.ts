@@ -1,8 +1,8 @@
 // EFFECTS
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType, OnInitEffects} from '@ngrx/effects';
-import {catchError, map, mergeMap} from 'rxjs/operators';
-import {FrankStoreService, StoreActions} from '../lib/frank-store.service';
+import {catchError, map, mergeMap, tap} from 'rxjs/operators';
+import {FrankStoreService, StoreActions, log} from '../lib/frank-store.service';
 import {Action} from '@ngrx/store';
 import {EMPTY} from 'rxjs';
 
@@ -11,6 +11,7 @@ export class FrankEffects implements OnInitEffects {
   all$ = createEffect(() =>
     this.actions$.pipe(
       ofType(StoreActions.getAll),
+      tap( ({type}) => log('action type: ', type)),
       mergeMap(() => {
         return this.frankStoreService.fromApi
           .pipe(

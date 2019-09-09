@@ -7,15 +7,16 @@ import {Transferkeys} from '../store/frank.transferkeys';
 import {State} from '../store/frank.reducers';
 
 export const forFeatureName = 'featureFrank';
+export const log = console.log;
 
 export class StoreActions {
-  static getAll = createAction('[Frank Get All]');
-  static success = createAction('[Frank Success]', props<{ items: any }>());
+  static getAll   = createAction('[Frank Get All]');
+  static success  = createAction('[Frank Success]', props<{ items: any }>());
 }
 
 export class StoreSelector {
-  static getState = createFeatureSelector<State>(forFeatureName);
-  static selectAll = createSelector(StoreSelector.getState, (state: State) => state.keys);
+  static getState   = createFeatureSelector<State>(forFeatureName);
+  static selectAll  = createSelector(StoreSelector.getState, (state: State) => state.keys);
 }
 
 
@@ -23,7 +24,12 @@ export class StoreSelector {
 export class FrankStoreService {
 
   public get fromApi(): Observable<any> {
-    return this.http.get('https://raw.githubusercontent.com/frankanneveld/FakeApi/master/db.json');
+    log('calling api: https://raw.githubusercontent.com/frankanneveld/FakeApi/master/componentA.json');
+    return this.http.get('https://raw.githubusercontent.com/frankanneveld/FakeApi/master/componentA.json');
+  }
+
+  public get allFrankSubscription(): Observable<any> {
+    return  this.store.pipe(select(StoreSelector.selectAll));
   }
 
   constructor(@Inject(PLATFORM_ID) private platformId: string,
@@ -32,12 +38,7 @@ export class FrankStoreService {
               private store: Store<any>) {
   }
 
-  public get allFrankSubscription(): Observable<any> {
-    return  this.store.pipe(select(StoreSelector.selectAll));
-  }
-
-
-  public getAll() {
+  public getAll(): void {
     if (isPlatformServer(this.platformId)) {
       this.fromApi.subscribe(key => this.transferkeys.transferKey = key);
     } else if (this.transferkeys.hasTransferKey) {
@@ -47,4 +48,3 @@ export class FrankStoreService {
     }
   }
 }
-
