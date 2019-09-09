@@ -32,9 +32,11 @@
         "projects/frank-store/src/public-api.ts"
       ],
       "lib-store-b": [
+        "dist/lib-store-b",
         "dist/lib-store-b"
       ],
       "lib-store-b/*": [
+        "dist/lib-store-b/*",
         "dist/lib-store-b/*"
       ],
       "@lib-store-b": [
@@ -51,6 +53,12 @@
       ],
       "lib-store-c/*": [
         "dist/lib-store-c/*"
+      ],
+      "@lib-store-a": [
+        "projects/lib-store-a/src/public-api"
+      ],
+      "@lib-store-c": [
+        "projects/lib-store-c/src/public-api"
       ]
     }
   },
