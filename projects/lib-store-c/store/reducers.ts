@@ -1,5 +1,7 @@
 import {Action, createReducer, on} from '@ngrx/store';
-import { StoreActions } from '../lib/frank-store.service';
+import {StoreActions} from '../src/lib/lib-store-c.service';
+
+
 
 
 export interface State {

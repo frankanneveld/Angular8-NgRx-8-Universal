@@ -13,10 +13,10 @@ import {ComponentCComponent} from './components/component-c/component-c.componen
 import {ComponentBComponent} from './components/component-b/component-b.component';
 
 // Library Imports
-import * as fromFrankStore from '@frank-store';
-
-import * as fromLibStoreBModule from '@lib-store-b';
 import * as fromLibStoreAModule from '@lib-store-a';
+import * as fromLibStoreBModule from '@lib-store-b';
+import * as fromLibStoreCModule from '@lib-store-c';
+
 
 // export const reducers: ActionReducerMap<{[key: string]: any}> = {};
 export const metaReducers: MetaReducer<{[key: string]: any}>[] = !environment.production ? [] : [];
@@ -41,10 +41,9 @@ export const metaReducers: MetaReducer<{[key: string]: any}>[] = !environment.pr
     }),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    fromFrankStore.FrankStoreModule,
     fromLibStoreAModule.LibStoreAModule,
-    fromLibStoreBModule.LibStoreBModule
-    // fromKpnStore.KpnStoreModule
+    fromLibStoreBModule.LibStoreBModule,
+    fromLibStoreCModule.LibStoreCModule
   ],
   bootstrap: [AppComponent],
 })

@@ -19,24 +19,11 @@
       "dom"
     ],
     "paths": {
-      "frank-store": [
-        "dist/frank-store"
-      ],
-      "kpn-store": [
-        "dist/kpn-store"
-      ],
-      "@kpn-store": [
-        "projects/kpn-store/src/projects.ts"
-      ],
-      "@frank-store": [
-        "projects/frank-store/src/public-api.ts"
-      ],
       "lib-store-b": [
         "dist/lib-store-b",
         "dist/lib-store-b"
       ],
       "lib-store-b/*": [
-        "dist/lib-store-b/*",
         "dist/lib-store-b/*"
       ],
       "@lib-store-b": [

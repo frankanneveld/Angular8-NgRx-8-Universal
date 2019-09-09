@@ -1,7 +1,6 @@
 /*
- * Public API Surface of lib-store-c
+ * Public API Surface of lib-store-b
  */
 
 export * from './lib/lib-store-c.service';
-export * from './lib/lib-store-c.component';
 export * from './lib/lib-store-c.module';
