@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {CopyService} from '@kpn-store';
-import {FrankStoreService} from '@frank-store';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-component-a',
@@ -11,21 +9,19 @@ export class ComponentAComponent implements OnInit {
 
   public response: any;
 
-  constructor(public copyService: CopyService, public  frankStoreService: FrankStoreService) {
+  constructor() {
 
   }
 
   ngOnInit() {
-    // this.copyService.allCopySubscription.subscribe(res => {
-    //   console.log(res || 'cannot read store on server');
-    // });
 
-    this.frankStoreService.allFrankSubscription.subscribe( response => {
-      if (response) {
-        this.response = response;
-        // console.log(response);
-      }
-    });
+
+    // this.frankStoreService.allFrankSubscription.subscribe( response => {
+    //   if (response) {
+    //     this.response = response;
+    //     // console.log(response);
+    //   }
+    // });
   }
 
 }
