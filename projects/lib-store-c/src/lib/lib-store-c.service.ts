@@ -8,7 +8,6 @@ import {State} from '../../store/reducers';
 import {Transferkeys} from '../../store/transferkeys';
 
 
-
 export const forFeatureName = 'STORE-C';
 export const log = console.log;
 

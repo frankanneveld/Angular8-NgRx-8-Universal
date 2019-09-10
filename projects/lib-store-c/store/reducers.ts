@@ -14,7 +14,7 @@ export const initialState: State = {
 
 const reducerCreate = createReducer(
   initialState,
-  on(StoreActions.success, (state, keys) => ({...state, keys}))
+  on(StoreActions.success, (state, data) => ({...state, data}))
 );
 
 export function reducer(state: State | undefined, action: Action) {

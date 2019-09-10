@@ -30,7 +30,7 @@ export class StoreService {
     return this.http.get('https://raw.githubusercontent.com/frankanneveld/FakeApi/master/componentA.json');
   }
 
-  public get allFrankSubscription(): Observable<any> {
+  public get allSubscription(): Observable<any> {
     return  this.store.pipe(select(StoreSelector.selectAll));
   }
 

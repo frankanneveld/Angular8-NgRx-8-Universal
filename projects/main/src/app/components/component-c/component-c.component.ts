@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {StoreService} from '@lib-store-c';
+import {Component, OnInit} from '@angular/core';
+import {StoreService as ServiceC} from '@lib-store-c';
 
 @Component({
   selector: 'app-component-c',
@@ -8,7 +8,7 @@ import {StoreService} from '@lib-store-c';
 })
 export class ComponentCComponent implements OnInit {
 
-  constructor(public storeService: StoreService) {
+  constructor(public storeService: ServiceC) {
     this.storeService.getAll();
   }
 
