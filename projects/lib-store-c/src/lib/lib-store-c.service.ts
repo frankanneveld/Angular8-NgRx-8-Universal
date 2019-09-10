@@ -1,11 +1,12 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {createAction, createFeatureSelector, createSelector, props, select, Store} from '@ngrx/store';
 import {HttpClient} from '@angular/common/http';
 import {isPlatformServer} from '@angular/common';
 
 import {State} from '../../store/reducers';
 import {Transferkeys} from '../../store/transferkeys';
+import {mapTo, mergeMap, tap} from 'rxjs/operators';
 
 
 export const forFeatureName = 'STORE-C';

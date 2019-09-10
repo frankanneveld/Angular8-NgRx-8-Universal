@@ -1,10 +1,10 @@
 // EFFECTS
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType, OnInitEffects} from '@ngrx/effects';
-import {catchError, map, mergeMap, tap} from 'rxjs/operators';
+import {catchError, map, mapTo, mergeMap, tap} from 'rxjs/operators';
 
 import {Action} from '@ngrx/store';
-import {EMPTY} from 'rxjs';
+import {EMPTY, of} from 'rxjs';
 import {log, StoreActions, StoreService} from '../src/lib/lib-store-c.service';
 
 
@@ -17,6 +17,7 @@ export class Effects implements OnInitEffects {
       mergeMap(() => {
         return this.storeService.fromApi
           .pipe(
+            mergeMap( (payload) => of({...payload, frank: 'txt'})), // merge extra data into source
             map((payload) => (StoreActions.success(payload))),
             catchError(() => EMPTY)
           );
