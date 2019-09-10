@@ -17,7 +17,9 @@ export class Effects implements OnInitEffects {
       mergeMap(() => {
         return this.storeService.fromApi
           .pipe(
-            mergeMap( (payload) => of({...payload, frank: 'txt'})), // merge extra data into source
+            // merge extra data into source WARNING this only works in browser mode
+            // to work with extra data to the source use mergeMap in the http response
+            mergeMap( (payload) => of({...payload, frank: 'txt'})),
             map((payload) => (StoreActions.success(payload))),
             catchError(() => EMPTY)
           );

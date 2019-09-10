@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {StoreService as ServiceC} from '@lib-store-c';
 import {Subscription} from 'rxjs';
-import {distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-component-c',
@@ -10,24 +9,22 @@ import {distinctUntilChanged} from 'rxjs/operators';
 })
 export class ComponentCComponent implements OnInit, OnDestroy {
 
-  private allSubscribtion$: Subscription;
+  private allSubscription$: Subscription;
 
   constructor(public serviceC: ServiceC) {
     this.serviceC.getAll();
   }
 
   ngOnInit() {
-    this.allSubscribtion$ = this.serviceC.allSubscription.pipe(distinctUntilChanged()).subscribe( response => {
+    this.allSubscription$ = this.serviceC.allSubscription.subscribe( response => {
         if (response) {
-          // this.response = response;
           console.log('Selector > ', response);
         }
       });
   }
 
   ngOnDestroy(): void {
-    console.log('Unsubscribe Component C');
-    this.allSubscribtion$.unsubscribe();
+    this.allSubscription$.unsubscribe();
   }
 
 }
