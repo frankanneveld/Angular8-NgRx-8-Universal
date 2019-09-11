@@ -1,9 +1,6 @@
 import {Action, createReducer, on} from '@ngrx/store';
 import {StoreActions} from '../src/lib/lib-store-c.service';
 
-
-
-
 export interface State {
   data: { [key: string]: any };
 }

@@ -1,1 +1,7 @@
 <p>component-c works!</p>
+<button (click)="show = !show">Show data in Local Forage</button>
+<br><br>
+<div *ngIf="show">
+  <pre>{{localData | json}}</pre>
+</div>
+

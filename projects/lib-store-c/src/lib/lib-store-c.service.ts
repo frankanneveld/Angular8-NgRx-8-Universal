@@ -51,7 +51,7 @@ export class StoreService {
     } else if (!this.hasDataInStore) {
       this.store.dispatch(StoreActions.getAll());
     } else {
-      // Has data in store
+      // we have data in the store
     }
   }
 }

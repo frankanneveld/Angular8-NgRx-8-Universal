@@ -19,7 +19,7 @@ export class Effects implements OnInitEffects {
           .pipe(
             // merge extra data into source WARNING this only works in browser mode
             // to work with extra data to the source use mergeMap in http response
-            mergeMap( (payload) => of({...payload, attention: 'this only works in browser mode'})),
+            // mergeMap( (payload) => of({...payload, attention: 'this only works in browser mode'})),
             map((payload) => (StoreActions.success(payload))),
             catchError(() => EMPTY)
           );

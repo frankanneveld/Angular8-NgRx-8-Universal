@@ -6,22 +6,6 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./component-a.component.scss']
 })
 export class ComponentAComponent implements OnInit {
-
-  public response: any;
-
-  constructor() {
-
-  }
-
-  ngOnInit() {
-
-
-    // this.frankStoreService.allFrankSubscription.subscribe( response => {
-    //   if (response) {
-    //     this.response = response;
-    //     // console.log(response);
-    //   }
-    // });
-  }
-
+  constructor() {}
+  ngOnInit() {}
 }
