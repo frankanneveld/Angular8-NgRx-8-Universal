@@ -6,6 +6,7 @@ import {catchError, map, mergeMap, tap} from 'rxjs/operators';
 import {Action} from '@ngrx/store';
 import {EMPTY, of} from 'rxjs';
 import {log, StoreActions, StoreService} from '../src/lib/lib-store-c.service';
+import { LocalDataStorage } from '../../main/src/app/services/localDataStorage';
 
 
 @Injectable()
@@ -20,14 +21,17 @@ export class Effects implements OnInitEffects {
             // merge extra data into source WARNING this only works in browser mode
             // to work with extra data to the source use mergeMap in http response
             // mergeMap( (payload) => of({...payload, attention: 'this only works in browser mode'})),
-            map((payload) => (StoreActions.success(payload))),
+            map((payload) => {
+              // this.localDataStorage.setCachedItem('response', payload);
+              return StoreActions.success(payload);
+            }),
             catchError(() => EMPTY)
           );
       })
     )
   );
 
-  constructor(private actions$: Actions, private storeService: StoreService) {}
+  constructor(private actions$: Actions, private storeService: StoreService, private localDataStorage: LocalDataStorage) {}
 
   ngrxOnInitEffects(): Action {
     return {type: '[STORE C Effects]: Init'};

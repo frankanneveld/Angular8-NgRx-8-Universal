@@ -11,10 +11,7 @@ export const initialState: State = {
 
 const reducerCreate = createReducer(
   initialState,
-  on(StoreActions.success, (state, data) => {
-    console.log('Reducer > ', data);
-    return ({...state, data});
-  })
+  on(StoreActions.success, (state, data) => ({...state, data}))
 );
 
 export function reducer(state: State | undefined, action: Action) {
