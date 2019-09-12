@@ -38,13 +38,11 @@ export class ComponentCComponent implements OnInit, OnDestroy {
     this.localDataStorage.getCachedItem('api-data-store-3').subscribe( res => {
       console.log(res);
     });
-    // console.log(this.localDataStorage.getCachedItem('response'));
     this.show = !this.show;
   }
 
   public setItem() {
-    console.log(this.localData);
-    this.localDataStorage.setCachedItem('api-data-store-3', this.localData);
+    this.localDataStorage.setCachedItem('api-data-store-3', this.localData).subscribe( result => console.log(result));
   }
 
   public showKeys() {

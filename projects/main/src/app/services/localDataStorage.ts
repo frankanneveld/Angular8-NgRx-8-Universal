@@ -21,10 +21,14 @@ export function configFactory(localDataStorage: LocalDataStorage) {
 @Injectable({providedIn: 'root'})
 export class LocalDataStorage {
 
-  private ready: boolean;
-
   constructor(@Inject(PLATFORM_ID) private platformId: string, private readonly ngf: NgForage, private readonly cache: NgForageCache) {
     console.log('Init localforage');
+    this.cache.configure(rootConfig);
+    from(this.cache.ready()).pipe(catchError(err => of(console.log(err)))).subscribe(() => {
+      console.log('Ready with storage driver: ', this.cache.activeDriver);
+      this.setCachedItem('init', uuid.v4());
+    });
+
   }
 
   public clear() {
@@ -66,14 +70,8 @@ export class LocalDataStorage {
   }
 
   init(): Promise<boolean> {
-    this.cache.configure(rootConfig);
-    from(this.cache.ready()).pipe(catchError(err => of(console.log(err)))).subscribe(() => {
-      this.ready = true;
-      console.log('Ready with storage driver: ', this.cache.activeDriver);
-    });
     return new Promise<boolean>((resolve) => {
       setTimeout(() => {
-        this.setCachedItem('store', {id: uuid.v4()});
         resolve(true);
       }, 0);
     });
