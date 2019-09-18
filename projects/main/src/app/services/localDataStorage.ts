@@ -30,7 +30,7 @@ export class LocalDataStorage {
   public clear() {
     this.cache.clear();
     console.log('Cache cleared');
-    console.log(this.cache.keys());
+    console.log('Cache length : ', this.cache.keys());
   }
 
   public removeCachedItem(key: string) {
