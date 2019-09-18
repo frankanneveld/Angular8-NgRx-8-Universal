@@ -3,17 +3,17 @@
 ** install: npm install localforage@^1.5.0 ngforage@^5.0.0
 ** usage: via setCachedItem and sgetCachedItem etc.
 ** This service will boot before Angular is up and running
-** but has to be in the main module
+** but has to be in the main module in providers Franky says
 */
 import { APP_INITIALIZER, Injectable } from '@angular/core';
 import { CachedItem, Driver, NgForage, NgForageCache, NgForageOptions } from 'ngforage';
-import { from, Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import * as uuid from 'uuid';
 import { PlatformService } from './platform.service';
+import { catchError, map } from 'rxjs/operators';
+import { from, Observable, of } from 'rxjs';
+import * as uuid from 'uuid';
 
 const rootConfig: NgForageOptions = {
-  name: 'frank-store-test',
+  name: 'LOCALSTORE',
   cacheTime: 30000,
   driver: [
     Driver.INDEXED_DB,
@@ -22,14 +22,10 @@ const rootConfig: NgForageOptions = {
   ]
 };
 
-
 @Injectable({providedIn: 'root'})
 export class LocalDataStorage {
 
-  constructor(private platformService: PlatformService, private readonly ngf: NgForage, private readonly cache: NgForageCache) {
-
-
-  }
+  constructor(private platformService: PlatformService, private readonly ngf: NgForage, private readonly cache: NgForageCache) {}
 
   public clear() {
     this.cache.clear();
@@ -45,19 +41,9 @@ export class LocalDataStorage {
     return from(this.cache.keys());
   }
 
-  // public setItem(key: string, item: any) {
-  //   if (isPlatformBrowser(this.platformId) && this.ready) {
-  //     this.ngf.removeItem(key);
-  //     this.ngf.setItem(key, item).then( res => console.log(`--->  setItem ${key} `, res));
-  //   }
-  // }
-  //
-  // public getItem<T = any>(key: string): Observable<T | null> {
-  //   return (isPlatformBrowser(this.platformId)) ? from(this.ngf.getItem<T>(key)) : from(EMPTY);
-  // }
-
-  // public set cachedItem() {}
-  // public get cachedItem() {}
+  public getLength(): Observable<number> {
+    return from(this.cache.length());
+  }
 
   public setCachedItem<T>(key: string, data: T, cacheTime?: number): Observable<T | null> {
     return from(this.cache.setCached<T>(key, data, cacheTime));
@@ -69,15 +55,14 @@ export class LocalDataStorage {
     );
   }
 
-
-  init(): Promise<boolean> {
+  factory(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       if (this.platformService.isBrowser) {
         console.log('Init localforage');
         this.cache.configure(rootConfig);
         from(this.cache.ready()).pipe(catchError(err => of(console.log(err)))).subscribe(() => {
-          console.log('Ready with storage driver: ', this.cache.activeDriver);
-          this.setCachedItem('init', uuid.v4());
+          console.log('Ready with localforage driver: ', this.cache.activeDriver);
+          this.setCachedItem('uuid', uuid.v4());
           resolve(true);
         });
       } else {
@@ -88,7 +73,7 @@ export class LocalDataStorage {
 }
 
 export function configFactory(localDataStorage: LocalDataStorage) {
-  return () => localDataStorage.init();
+  return () => localDataStorage.factory();
 }
 
 export const LocalDataStorageProvider = [LocalDataStorage, {
@@ -96,6 +81,5 @@ export const LocalDataStorageProvider = [LocalDataStorage, {
   useFactory: configFactory,
   deps: [LocalDataStorage],
   multi: true
-}
-];
+}];
 

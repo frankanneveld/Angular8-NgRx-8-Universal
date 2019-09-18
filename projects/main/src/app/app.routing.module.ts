@@ -16,7 +16,7 @@ import { StoreService as StoreC } from '@lib-store-c';
 //     preload: [{
 //     store: StoreA,
 //     useCaching: true,
-//     cachTime: 5000
+//     cachTime?: 5000
 //   }]
 // }
 
@@ -55,15 +55,12 @@ export class AppRoutingModule {
       map(r => r.firstChild ? r.firstChild : r),
       filter(r => r.outlet === 'primary'),
       mergeMap(r => r.data)).subscribe((data) => {
-
-
       if (!!data && data.preload) {
-        data.preload.forEach(pre => {
-          const store = this.injector.get(pre);
-          store.getAll();
+        data.preload.forEach(s => {
+          const store = this.injector.get(s);
+          store.getAll(true);
         });
       }
-
     });
   }
 }

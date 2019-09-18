@@ -6,14 +6,14 @@ import { HttpClient } from '@angular/common/http';
 import { State } from '../../store/reducers';
 import { Transferkeys } from '../../store/transferkeys';
 import { PlatformService } from '../../../main/src/app/services/platform.service';
+import { LocalDataStorage } from '../../../main/src/app/services/localDataStorage';
 
 
 export const forFeatureName = 'STORE-A';
-export const log = console.log;
 
 export class StoreActions {
   static getAll = createAction('[STORE A Get All]');
-  static success = createAction('[STORE A Success]', props<{ items: any }>());
+  static success = createAction('[STORE A Success]', props<{ items: any}>());
 }
 
 export class StoreSelector {
@@ -25,6 +25,7 @@ export class StoreSelector {
 @Injectable()
 export class StoreService {
   private hasDataInStore: boolean;
+  private hasDataInLocalStore: boolean;
 
   public get fromApi(): Observable<any> {
     log('calling api: https://raw.githubusercontent.com/frankanneveld/FakeApi/master/componentA.json');
@@ -38,17 +39,34 @@ export class StoreService {
   constructor(private platformService: PlatformService,
               private transferkeys: Transferkeys,
               private http: HttpClient,
+              private localDataStorage: LocalDataStorage,
               private store: Store<any>) {
     this.store.pipe(select(StoreSelector.hasData)).subscribe( has => this.hasDataInStore = has);
   }
 
-  public getAll(): void {
+  public setCached(data: any) {
+    this.localDataStorage.setCachedItem( forFeatureName, data).subscribe( res => {
+      console.log('Subscribtion from setCache', res);
+      this.localDataStorage.getLength().subscribe( l => {
+        console.log('Cache length', l);
+      });
+    });
+  }
+
+  public getAll(cache = false): void {
     if (this.platformService.isServer) {
       this.fromApi.subscribe(key => this.transferkeys.transferKey = key);
     } else if (this.transferkeys.hasTransferKey) {
-      this.store.dispatch(StoreActions.success(this.transferkeys.transferKey));
+      const transferkey = this.transferkeys.transferKey;
+      this.store.dispatch(StoreActions.success(transferkey));
+      if (cache) this.setCached(transferkey);
     } else if (!this.hasDataInStore) {
-      this.store.dispatch(StoreActions.getAll());
+      this.localDataStorage.getCachedItem(forFeatureName).subscribe( (items: any) => {
+        const actions = items ? StoreActions.success(items) : StoreActions.getAll();
+        this.store.dispatch(actions);
+      });
     }
   }
 }
+
+export const log = console.log;
