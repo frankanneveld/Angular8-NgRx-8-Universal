@@ -12,8 +12,8 @@ import { LocalDataStorage } from '../../../main/src/app/services/localDataStorag
 export const forFeatureName = 'STORE-A';
 
 export class StoreActions {
-  static getAll = createAction('[STORE A Get All]');
-  static success = createAction('[STORE A Success]', props<{ items: any}>());
+  static getAll = createAction(`[${forFeatureName} -getAll]`);
+  static success = createAction(`[${forFeatureName} -success]`, props<{ items: any}>());
 }
 
 export class StoreSelector {
@@ -27,8 +27,9 @@ export class StoreService {
   private hasDataInStore: boolean;
 
   public get fromApi(): Observable<any> {
-    log('calling api: https://raw.githubusercontent.com/frankanneveld/FakeApi/master/componentA.json');
-    return this.http.get('https://raw.githubusercontent.com/frankanneveld/FakeApi/master/componentA.json');
+    const url = 'calling api: https://raw.githubusercontent.com/frankanneveld/FakeApi/master/componentA.json';
+    log(url); // TODO: Clean up later
+    return this.http.get(url);
   }
 
   public get allSubscription(): Observable<any> {
