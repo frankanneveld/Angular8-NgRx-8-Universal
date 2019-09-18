@@ -9,13 +9,15 @@ import { LocalDataStorage } from '../../services/localDataStorage';
   styleUrls: ['./component-c.component.scss']
 })
 export class ComponentCComponent implements OnInit, OnDestroy {
-
+  public result: any;
   public data: any;
   public localData: any;
   private allSubscription$: Subscription;
 
   constructor(public serviceC: ServiceC, private localDataStorage: LocalDataStorage) {
-    // this.serviceC.getAll();
+    serviceC.allSubscription.subscribe(res => {
+      this.result = res;
+    });
   }
 
   ngOnInit() {

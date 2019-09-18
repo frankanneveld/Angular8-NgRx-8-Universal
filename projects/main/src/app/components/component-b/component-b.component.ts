@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StoreService as ServiceB } from '@lib-store-b';
 
 @Component({
   selector: 'app-component-b',
@@ -6,6 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./component-b.component.scss']
 })
 export class ComponentBComponent implements OnInit {
-  constructor() { }
-  ngOnInit() {}
+  public result: any;
+
+  constructor(public serviceB: ServiceB) {
+    serviceB.allSubscription.subscribe(res => {
+      this.result = res;
+    });
+  }
+
+  ngOnInit() {
+  }
 }

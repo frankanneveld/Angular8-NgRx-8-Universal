@@ -2,16 +2,16 @@ import {Action, createReducer, on} from '@ngrx/store';
 import {StoreActions} from '../src/lib/lib-store-c.service';
 
 export interface State {
-  data: { [key: string]: any };
+  keys: { [key: string]: any };
 }
 
 export const initialState: State = {
-  data: null
+  keys: null
 };
 
 const reducerCreate = createReducer(
   initialState,
-  on(StoreActions.success, (state, data) => ({...state, data}))
+  on(StoreActions.success, (state, keys) => ({...state, keys}))
 );
 
 export function reducer(state: State | undefined, action: Action) {

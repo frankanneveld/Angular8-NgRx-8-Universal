@@ -1,4 +1,5 @@
-# NgRx8Test
+# Angular8-NgRx-8-Universal
+Boilerplate for Angular 8 with Universal-SSR and NgRx8 with Local Caching
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.1.0.
 
