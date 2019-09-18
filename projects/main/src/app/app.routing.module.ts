@@ -1,13 +1,13 @@
-import {NgModule, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Route, Router, RouterModule, Routes} from '@angular/router';
-import {ComponentAComponent} from './components/component-a/component-a.component';
-import {ComponentCComponent} from './components/component-c/component-c.component';
-import {ComponentBComponent} from './components/component-b/component-b.component';
-import {filter} from 'rxjs/operators';
+import { NgModule } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router, RouterModule, Routes } from '@angular/router';
+import { ComponentAComponent } from './components/component-a/component-a.component';
+import { ComponentCComponent } from './components/component-c/component-c.component';
+import { ComponentBComponent } from './components/component-b/component-b.component';
+import { filter, map, mergeMap, tap } from 'rxjs/operators';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'a', pathMatch: 'full'},
+  {path: '', redirectTo: 'a', pathMatch: 'full'},
   {
     path: 'a', pathMatch: 'full', component: ComponentAComponent,
     data: {
@@ -24,7 +24,7 @@ const routes: Routes = [
     path: 'c', pathMatch: 'full', component: ComponentCComponent,
     data: {
       type: 'c',
-      preload: ['empty string', { key: 3}]
+      preload: ['empty string', {key: 3}]
     }
   }
 ];
@@ -36,11 +36,12 @@ const routes: Routes = [
 export class AppRoutingModule {
   constructor(private router: Router, private route: ActivatedRoute) {
     router.events.pipe(
-      filter((event) => event instanceof NavigationEnd)).subscribe((result) => {
-      console.log('Current route: ', result);
+      filter((event) => event instanceof NavigationEnd),
+      map(() => this.route),
+      map(r => r.firstChild ? r.firstChild : r),
+      filter(r => r.outlet === 'primary'),
+      mergeMap(r => r.data)).subscribe((result) => {
+      console.log('Current route data : ', result);
     });
-
-    // route.data.subscribe( res => console.log(res));
-    console.log('Route data >', this.route.snapshot.data);
   }
 }

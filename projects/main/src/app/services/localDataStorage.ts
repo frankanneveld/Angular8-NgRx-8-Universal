@@ -1,8 +1,15 @@
-import { APP_INITIALIZER, Inject, Injectable, PLATFORM_ID } from '@angular/core';
+/*
+** LocalForage implementation
+** install: npm install localforage@^1.5.0 ngforage@^5.0.0
+** usage: via setCachedItem and sgetCachedItem etc.
+** This service will boot before Angular is up and running
+*/
+import { APP_INITIALIZER, Injectable } from '@angular/core';
 import { CachedItem, Driver, NgForage, NgForageCache, NgForageOptions } from 'ngforage';
 import { from, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import * as uuid from 'uuid';
+import { PlatformService } from './platform.service';
 
 const rootConfig: NgForageOptions = {
   name: 'frank-store-test',
@@ -14,20 +21,12 @@ const rootConfig: NgForageOptions = {
   ]
 };
 
-export function configFactory(localDataStorage: LocalDataStorage) {
-  return () => localDataStorage.init();
-}
 
 @Injectable({providedIn: 'root'})
 export class LocalDataStorage {
 
-  constructor(@Inject(PLATFORM_ID) private platformId: string, private readonly ngf: NgForage, private readonly cache: NgForageCache) {
-    console.log('Init localforage');
-    this.cache.configure(rootConfig);
-    from(this.cache.ready()).pipe(catchError(err => of(console.log(err)))).subscribe(() => {
-      console.log('Ready with storage driver: ', this.cache.activeDriver);
-      this.setCachedItem('init', uuid.v4());
-    });
+  constructor(private platformService: PlatformService, private readonly ngf: NgForage, private readonly cache: NgForageCache) {
+
 
   }
 
@@ -69,20 +68,33 @@ export class LocalDataStorage {
     );
   }
 
+
   init(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      setTimeout(() => {
+      if (this.platformService.isBrowser) {
+        console.log('Init localforage');
+        this.cache.configure(rootConfig);
+        from(this.cache.ready()).pipe(catchError(err => of(console.log(err)))).subscribe(() => {
+          console.log('Ready with storage driver: ', this.cache.activeDriver);
+          this.setCachedItem('init', uuid.v4());
+          resolve(true);
+        });
+      } else {
         resolve(true);
-      }, 0);
+      }
     });
   }
 }
 
+export function configFactory(localDataStorage: LocalDataStorage) {
+  return () => localDataStorage.init();
+}
+
 export const LocalDataStorageProvider = [LocalDataStorage, {
-    provide: APP_INITIALIZER,
-    useFactory: configFactory,
-    deps: [LocalDataStorage],
-    multi: true
-  }
+  provide: APP_INITIALIZER,
+  useFactory: configFactory,
+  deps: [LocalDataStorage],
+  multi: true
+}
 ];
 

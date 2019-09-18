@@ -7,6 +7,7 @@ import {isPlatformServer} from '@angular/common';
 import {State} from '../../store/reducers';
 import {Transferkeys} from '../../store/transferkeys';
 import {mapTo, mergeMap, tap} from 'rxjs/operators';
+import { PlatformService } from '../../../main/src/app/services/platform.service';
 
 
 export const forFeatureName = 'STORE-C';
@@ -36,7 +37,7 @@ export class StoreService {
     return  this.store.pipe(select(StoreSelector.selectAll));
   }
 
-  constructor(@Inject(PLATFORM_ID) private platformId: string,
+  constructor(private platformService: PlatformService,
               private transferkeys: Transferkeys,
               private http: HttpClient,
               private store: Store<any>) {
@@ -44,7 +45,7 @@ export class StoreService {
   }
 
   public getAll(): void {
-    if (isPlatformServer(this.platformId)) {
+    if (this.platformService.isServer) {
       this.fromApi.subscribe(key => this.transferkeys.transferKey = key);
     } else if (this.transferkeys.hasTransferKey) {
       this.store.dispatch(StoreActions.success(this.transferkeys.transferKey));

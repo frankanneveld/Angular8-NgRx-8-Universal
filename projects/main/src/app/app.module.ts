@@ -5,7 +5,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app.routing.module';
-
+import { LocalDataStorageProvider } from './services/localDataStorage';
 
 // Component Imports
 import { AppComponent } from './app.component';
@@ -16,7 +16,7 @@ import { ComponentBComponent } from './components/component-b/component-b.compon
 import * as fromLibStoreAModule from '@lib-store-a';
 import * as fromLibStoreBModule from '@lib-store-b';
 import * as fromLibStoreCModule from '@lib-store-c';
-import { LocalDataStorageProvider } from './services/localDataStorage';
+
 
 
 // export const reducers: ActionReducerMap<{[key: string]: any}> = {};
@@ -46,7 +46,7 @@ export const metaReducers: MetaReducer<{ [key: string]: any }>[] = !environment.
     fromLibStoreBModule.LibStoreBModule,
     fromLibStoreCModule.LibStoreCModule
   ],
-  providers: [],
+  providers: [LocalDataStorageProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule {
