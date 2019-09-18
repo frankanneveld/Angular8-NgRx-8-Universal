@@ -27,7 +27,7 @@ export class StoreService {
   private hasDataInStore: boolean;
 
   public get fromApi(): Observable<any> {
-    const url = 'calling api: https://raw.githubusercontent.com/frankanneveld/FakeApi/master/componentA.json';
+    const url = 'https://raw.githubusercontent.com/frankanneveld/FakeApi/master/componentA.json';
     log(url); // TODO: Clean up later
     return this.http.get(url);
   }
