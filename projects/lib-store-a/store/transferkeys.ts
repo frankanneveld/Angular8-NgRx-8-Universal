@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {makeStateKey, TransferState} from '@angular/platform-browser';
 
-export const STORE_A_TRANSFER_KEY = makeStateKey<any>('STORE_A_TRANSFER_KEY');
+export const STORE_A_TRANSFER_KEY = makeStateKey<string>('STORE_A_TRANSFER_KEY');
 
 @Injectable()
 export class Transferkeys {

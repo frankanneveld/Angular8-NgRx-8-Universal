@@ -5,14 +5,14 @@ import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 
 import { Action } from '@ngrx/store';
 import { EMPTY } from 'rxjs';
-import { log, StoreActions, StoreService } from '../src/lib/lib-store-a.service';
+import { StoreActions, StoreService } from '../src/lib/lib-store-a.service';
 
 @Injectable()
 export class Effects implements OnInitEffects {
   all$ = createEffect(() =>
     this.actions$.pipe(
       ofType(StoreActions.getAll),
-      tap(({type}) => log('action type: ', type)),
+      tap(({type}) => console.log('action type: ', type)),
       mergeMap(() => {
         return this.storeService.fromApi
           .pipe(

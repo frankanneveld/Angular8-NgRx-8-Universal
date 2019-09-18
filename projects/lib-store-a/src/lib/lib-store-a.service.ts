@@ -25,7 +25,6 @@ export class StoreSelector {
 @Injectable()
 export class StoreService {
   private hasDataInStore: boolean;
-  private hasDataInLocalStore: boolean;
 
   public get fromApi(): Observable<any> {
     log('calling api: https://raw.githubusercontent.com/frankanneveld/FakeApi/master/componentA.json');
@@ -46,9 +45,9 @@ export class StoreService {
 
   public setCached(data: any) {
     this.localDataStorage.setCachedItem( forFeatureName, data).subscribe( res => {
-      console.log('Subscribtion from setCache', res);
+      log('Subscribtion from setCache', res);
       this.localDataStorage.getLength().subscribe( l => {
-        console.log('Cache length', l);
+        log('Cache length', l);
       });
     });
   }
@@ -69,4 +68,4 @@ export class StoreService {
   }
 }
 
-export const log = console.log;
+const log = console.log;
