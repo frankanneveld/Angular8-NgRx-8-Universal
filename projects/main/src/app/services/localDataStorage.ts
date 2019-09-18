@@ -3,6 +3,7 @@
 ** install: npm install localforage@^1.5.0 ngforage@^5.0.0
 ** usage: via setCachedItem and sgetCachedItem etc.
 ** This service will boot before Angular is up and running
+** but has to be in the main module
 */
 import { APP_INITIALIZER, Injectable } from '@angular/core';
 import { CachedItem, Driver, NgForage, NgForageCache, NgForageOptions } from 'ngforage';

@@ -9,6 +9,17 @@ import { StoreService as StoreA } from '@lib-store-a';
 import { StoreService as StoreB } from '@lib-store-b';
 import { StoreService as StoreC } from '@lib-store-c';
 
+
+// TODO: make data cacheable with flag
+// data: {
+//   type: 'homepage | landing',
+//     preload: [{
+//     store: StoreA,
+//     useCaching: true,
+//     cachTime: 5000
+//   }]
+// }
+
 const routes: Routes = [
   {path: '', redirectTo: 'a', pathMatch: 'full'},
   {

@@ -12,15 +12,13 @@ import { AppComponent } from './app.component';
 import { ComponentAComponent } from './components/component-a/component-a.component';
 import { ComponentCComponent } from './components/component-c/component-c.component';
 import { ComponentBComponent } from './components/component-b/component-b.component';
+
 // Library Imports
 import * as fromLibStoreAModule from '@lib-store-a';
 import * as fromLibStoreBModule from '@lib-store-b';
 import * as fromLibStoreCModule from '@lib-store-c';
 
 
-
-// export const reducers: ActionReducerMap<{[key: string]: any}> = {};
-export const metaReducers: MetaReducer<{ [key: string]: any }>[] = !environment.production ? [] : [];
 
 @NgModule({
   declarations: [
@@ -34,7 +32,6 @@ export const metaReducers: MetaReducer<{ [key: string]: any }>[] = !environment.
     BrowserTransferStateModule,
     AppRoutingModule,
     StoreModule.forRoot({}, {
-      metaReducers,
       runtimeChecks: {
         strictStateImmutability: true,
         strictActionImmutability: true
