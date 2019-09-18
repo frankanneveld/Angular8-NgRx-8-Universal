@@ -19,10 +19,12 @@ export class StoreActions {
 export class StoreSelector {
   static getState = createFeatureSelector<State>(forFeatureName);
   static selectAll = createSelector(StoreSelector.getState, (state: State) => state.keys);
+  static hasData  = createSelector(StoreSelector.getState, (state: State) => !!state.keys);
 }
 
 @Injectable()
 export class StoreService {
+  private hasDataInStore: boolean;
 
   public get fromApi(): Observable<any> {
     log('calling api: https://raw.githubusercontent.com/frankanneveld/FakeApi/master/componentA.json');
@@ -37,6 +39,7 @@ export class StoreService {
               private transferkeys: Transferkeys,
               private http: HttpClient,
               private store: Store<any>) {
+    this.store.pipe(select(StoreSelector.hasData)).subscribe( has => this.hasDataInStore = has);
   }
 
   public getAll(): void {
@@ -44,7 +47,7 @@ export class StoreService {
       this.fromApi.subscribe(key => this.transferkeys.transferKey = key);
     } else if (this.transferkeys.hasTransferKey) {
       this.store.dispatch(StoreActions.success(this.transferkeys.transferKey));
-    } else {
+    } else if (!this.hasDataInStore) {
       this.store.dispatch(StoreActions.getAll());
     }
   }

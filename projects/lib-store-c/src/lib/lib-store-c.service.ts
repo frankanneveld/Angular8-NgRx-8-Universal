@@ -1,12 +1,10 @@
-import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {createAction, createFeatureSelector, createSelector, props, select, Store} from '@ngrx/store';
-import {HttpClient} from '@angular/common/http';
-import {isPlatformServer} from '@angular/common';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { createAction, createFeatureSelector, createSelector, props, select, Store } from '@ngrx/store';
+import { HttpClient } from '@angular/common/http';
 
-import {State} from '../../store/reducers';
-import {Transferkeys} from '../../store/transferkeys';
-import {mapTo, mergeMap, tap} from 'rxjs/operators';
+import { State } from '../../store/reducers';
+import { Transferkeys } from '../../store/transferkeys';
 import { PlatformService } from '../../../main/src/app/services/platform.service';
 
 
@@ -51,8 +49,6 @@ export class StoreService {
       this.store.dispatch(StoreActions.success(this.transferkeys.transferKey));
     } else if (!this.hasDataInStore) {
       this.store.dispatch(StoreActions.getAll());
-    } else {
-      // we have data in the store
     }
   }
 }

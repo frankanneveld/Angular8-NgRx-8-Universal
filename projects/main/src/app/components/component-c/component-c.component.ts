@@ -10,12 +10,12 @@ import { LocalDataStorage } from '../../services/localDataStorage';
 })
 export class ComponentCComponent implements OnInit, OnDestroy {
 
+  public data: any;
   public localData: any;
-  public show: boolean;
   private allSubscription$: Subscription;
 
   constructor(public serviceC: ServiceC, private localDataStorage: LocalDataStorage) {
-    this.serviceC.getAll();
+    // this.serviceC.getAll();
   }
 
   ngOnInit() {
@@ -36,13 +36,13 @@ export class ComponentCComponent implements OnInit, OnDestroy {
 
   public getItem() {
     this.localDataStorage.getCachedItem('api-data-store-3').subscribe( res => {
+      this.data = res;
       console.log(res);
     });
-    this.show = !this.show;
   }
 
   public setItem() {
-    this.localDataStorage.setCachedItem('api-data-store-3', this.localData).subscribe( result => console.log(result));
+    this.localDataStorage.setCachedItem('api-data-store-3', this.localData).subscribe( result => console.log('Setting items: ', result));
   }
 
   public showKeys() {

@@ -21,6 +21,6 @@ import {forFeatureName, StoreService} from './lib-store-a.service';
 export class LibStoreAModule {
 
   constructor(private storeService: StoreService) {
-    storeService.getAll();
+    // storeService.getAll();
   }
 }

@@ -1,30 +1,33 @@
-import { NgModule } from '@angular/core';
+import { Injector, NgModule } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule, Routes } from '@angular/router';
 import { ComponentAComponent } from './components/component-a/component-a.component';
 import { ComponentCComponent } from './components/component-c/component-c.component';
 import { ComponentBComponent } from './components/component-b/component-b.component';
-import { filter, map, mergeMap, tap } from 'rxjs/operators';
+import { filter, map, mergeMap } from 'rxjs/operators';
 
+import { StoreService as StoreA } from '@lib-store-a';
+import { StoreService as StoreB } from '@lib-store-b';
+import { StoreService as StoreC } from '@lib-store-c';
 
 const routes: Routes = [
   {path: '', redirectTo: 'a', pathMatch: 'full'},
   {
     path: 'a', pathMatch: 'full', component: ComponentAComponent,
     data: {
-      type: 'a',
-      preload: ['b']
+      type: 'homepage | landing',
+      preload: [StoreA]
     }
   }, {
     path: 'b', pathMatch: 'full', component: ComponentBComponent,
     data: {
-      type: 'b',
-      preload: ['hello', 'goodbye']
+      type: 'overview',
+      preload: [StoreA, StoreB]
     }
   }, {
     path: 'c', pathMatch: 'full', component: ComponentCComponent,
     data: {
-      type: 'c',
-      preload: ['empty string', {key: 3}]
+      type: 'detail',
+      preload: [StoreA, StoreC]
     }
   }
 ];
@@ -34,14 +37,22 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule {
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(private router: Router, private route: ActivatedRoute, private injector: Injector) {
     router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
       map(() => this.route),
       map(r => r.firstChild ? r.firstChild : r),
       filter(r => r.outlet === 'primary'),
-      mergeMap(r => r.data)).subscribe((result) => {
-      console.log('Current route data : ', result);
+      mergeMap(r => r.data)).subscribe((data) => {
+
+
+      if (!!data && data.preload) {
+        data.preload.forEach(pre => {
+          const store = this.injector.get(pre);
+          store.getAll();
+        });
+      }
+
     });
   }
 }
