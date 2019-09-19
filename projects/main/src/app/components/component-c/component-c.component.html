@@ -1,4 +1,6 @@
-<pre>{{result | json}}</pre>
+<pre *ngIf="result">
+  {{result | json}}
+</pre>
 
 <!--<span><button (click)="setItem()">Put Data in LocalStore</button></span>-->
 <!--<span><button  (click)="getItem()">Get Data from LocalStore</button></span>-->

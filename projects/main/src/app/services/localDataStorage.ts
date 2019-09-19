@@ -8,12 +8,12 @@
 import { APP_INITIALIZER, Injectable } from '@angular/core';
 import { CachedItem, Driver, NgForage, NgForageCache, NgForageOptions } from 'ngforage';
 import { PlatformService } from './platform.service';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, take } from 'rxjs/operators';
 import { from, Observable, of } from 'rxjs';
 import * as uuid from 'uuid';
 
 const rootConfig: NgForageOptions = {
-  name: 'LOCALSTORE',
+  name: 'user_storage',
   cacheTime: 30000,
   driver: [
     Driver.INDEXED_DB,
@@ -38,21 +38,21 @@ export class LocalDataStorage {
   }
 
   public getKeys(): Observable<string[]> {
-    return from(this.cache.keys());
+    return from(this.cache.keys()).pipe(take(1));
   }
 
   public getLength(): Observable<number> {
-    return from(this.cache.length());
+    return from(this.cache.length()).pipe(take(1));
   }
 
   public setCachedItem<T>(key: string, data: T, cacheTime?: number): Observable<T | null> {
-    return from(this.cache.setCached<T>(key, data, cacheTime));
+    return from(this.cache.setCached<T>(key, data, cacheTime)).pipe(take(1));
   }
 
   public getCachedItem<T = any>(key: string): Observable<CachedItem<T> | null> {
     return from(this.cache.getCached<T>(key)).pipe(
       map((r: any) => (!r.hasData || r.expired) ? null : r.data)
-    );
+    ).pipe(take(1));
   }
 
   factory(): Promise<boolean> {

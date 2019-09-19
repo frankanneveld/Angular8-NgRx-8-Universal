@@ -5,9 +5,16 @@ import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/ro
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styles: [`ul {
-      list-style: none
-  }`],
+  styles: [`
+      * {font-family: Helvetica}
+      a {text-decoration: none; color: black; padding: 10px}
+      h1 {text-align: center}
+      div:first-child { display: flex; justify-content: center; flex-flow: column nowrap; align-items: center}
+      ul {list-style: none; display: inline-flex}
+      li {margin:0 10px 0 0; padding: 10px}
+      li:hover {background: cornflowerblue}
+      span {width: 40%; text-align: center}
+  `],
   providers: [RouterOutlet]
 })
 export class AppComponent implements OnInit {
