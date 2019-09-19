@@ -13,7 +13,7 @@ import { from, Observable, of } from 'rxjs';
 import * as uuid from 'uuid';
 
 const rootConfig: NgForageOptions = {
-  name: 'LOCALSTORE',
+  name: 'user_storage',
   cacheTime: 30000,
   driver: [
     Driver.INDEXED_DB,
