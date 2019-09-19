@@ -7,7 +7,7 @@ import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/ro
   templateUrl: './app.component.html',
   styles: [`
       * {font-family: Helvetica}
-      a {text-decoration: none; color: black;}
+      a {text-decoration: none; color: black; padding: 10px}
       h1 {text-align: center}
       div:first-child { display: flex; justify-content: center; flex-flow: column nowrap; align-items: center}
       ul {list-style: none; display: inline-flex}
