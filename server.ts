@@ -18,24 +18,43 @@
 import 'zone.js/dist/zone-node';
 
 import * as express from 'express';
-import {join} from 'path';
+import { join } from 'path';
+import * as cookieParser from 'cookie-parser';
 
 // Express server
 const app = express();
+app.use(cookieParser());
+
+let cookie;
+let signedCookies;
 
 const PORT = process.env.PORT || 4000;
 const DIST_FOLDER = join(process.cwd(), 'dist/browser');
+
+// declare var cookies;
+// declare var signedCookies;
 
 // * NOTE :: leave this as require() since this file is built Dynamically from webpack
 const {AppServerModuleNgFactory, LAZY_MODULE_MAP, ngExpressEngine, provideModuleMap} = require('./dist/server/main');
 
 // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
-app.engine('html', ngExpressEngine({
-  bootstrap: AppServerModuleNgFactory,
-  providers: [
-    provideModuleMap(LAZY_MODULE_MAP)
-  ]
-}));
+// app.engine('html', ngExpressEngine({
+//   bootstrap: AppServerModuleNgFactory,
+//   providers: [
+//     provideModuleMap(LAZY_MODULE_MAP)
+//   ]
+// }));
+
+app.engine('html', (_, options, callback) => {
+  // console.log('cookie >> ', cookie);
+  // console.log('signedCookies >> ', signedCookies);
+  const engine = ngExpressEngine({
+    bootstrap: AppServerModuleNgFactory,
+    providers: [{provide: 'request', useFactory: () => ({cookie, signedCookies}), deps: []}, provideModuleMap(LAZY_MODULE_MAP)]
+  });
+
+  engine(_, options, callback);
+});
 
 app.set('view engine', 'html');
 app.set('views', DIST_FOLDER);
@@ -47,8 +66,11 @@ app.get('*.*', express.static(DIST_FOLDER, {
   maxAge: '1y'
 }));
 
+
 // All regular routes use the Universal engine
 app.get('*', (req, res) => {
+  cookie = req.cookies;
+  signedCookies = req.signedCookies;
   res.render('index', { req });
 });
 

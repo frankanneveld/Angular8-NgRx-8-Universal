@@ -1,10 +1,11 @@
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { MetaReducer, StoreModule } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app.routing.module';
+import { CookieService } from 'ngx-cookie-service';
 import { LocalDataStorageProvider } from './services/localDataStorage';
 
 // Component Imports
@@ -43,7 +44,7 @@ import * as fromLibStoreCModule from '@lib-store-c';
     fromLibStoreBModule.LibStoreBModule,
     fromLibStoreCModule.LibStoreCModule
   ],
-  providers: [LocalDataStorageProvider],
+  providers: [LocalDataStorageProvider, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

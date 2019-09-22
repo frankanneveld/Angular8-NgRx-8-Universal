@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { createAction, createFeatureSelector, createSelector, props, select, Store } from '@ngrx/store';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
 import { State } from '../../store/reducers';
 import { Transferkeys } from '../../store/transferkeys';
@@ -25,6 +25,7 @@ export class StoreSelector {
 @Injectable()
 export class StoreService {
   private hasDataInStore: boolean;
+  private cookie: any;
 
   public get fromApi(): Observable<any> {
     const url = 'https://raw.githubusercontent.com/frankanneveld/FakeApi/master/componentA.json';
@@ -39,9 +40,11 @@ export class StoreService {
   constructor(private platformService: PlatformService,
               private transferkeys: Transferkeys,
               private http: HttpClient,
+              private injector: Injector,
               private localDataStorage: LocalDataStorage,
               private store: Store<any>) {
     this.store.pipe(select(StoreSelector.hasData)).subscribe( has => this.hasDataInStore = has);
+    // if (platformService.isServer) this.getCookieOnServer();
   }
 
   public setCached(data: any) {
@@ -53,9 +56,42 @@ export class StoreService {
     });
   }
 
+  private setCookieVersion() {
+    // Writes the endpoint version into the cookie;
+  }
+
+  private getCookieOnServer() {
+    const req = this.injector.get('request');
+    if (!!req && req.cookie) {
+      Object.keys(req.cookie).forEach( c => {
+        if (c === forFeatureName) {
+          // console.log('Request \x1b[1m Server Cookie :  \x1b[0m');
+          // console.log( JSON.parse(req.cookie[forFeatureName]));
+          this.cookie = JSON.parse(req.cookie[forFeatureName]) || null;
+          // return JSON.parse(req.cookie[forFeatureName]);
+        }
+      });
+    }
+  }
+
   public getAll(cache = false): void {
     if (this.platformService.isServer) {
-      this.fromApi.subscribe(key => this.transferkeys.transferKey = key);
+      this.getCookieOnServer();
+      this.fromApi.subscribe(key => {
+        // console.log(this.cookie.date);
+        // console.log(this.cookie.arr);
+        console.log('version in cookie : ', this.cookie.version);
+        console.log('version form api : ', key.version);
+
+        if (this.cookie.version !== key.version) {
+          console.log('write data in transferkey');
+          this.transferkeys.transferKey = key;
+        } else {
+          console.log('remove transferkey');
+          this.transferkeys.remove();
+        }
+
+      });
     } else if (this.transferkeys.hasTransferKey) {
       const transferkey = this.transferkeys.transferKey;
       this.store.dispatch(StoreActions.success(transferkey));
