@@ -47,14 +47,14 @@ export class StoreService {
               private localDataStorage: LocalDataStorage,
               private store: Store<any>) {
     this.store.pipe(select(StoreSelector.hasData)).subscribe( has => this.hasDataInStore = has);
-    // if (platformService.isServer) this.getCookieOnServer();
+    if (platformService.isServer) this.getCookieOnServer();
   }
 
   public setCached(data: any) {
     this.localDataStorage.setCachedItem( forFeatureName, data).subscribe( res => {
       log('Subscribtion from setCache', res);
-      log('version', res.version);
       this.cookieService.set(forFeatureName, JSON.stringify({version: (res.version || null)}));
+      log('version', JSON.parse(this.cookieService.get(forFeatureName)).version);
       this.localDataStorage.getLength().subscribe( l => {
         log('Cache length', l);
       });
@@ -73,20 +73,26 @@ export class StoreService {
     }
   }
 
+  private handleOnServer() {
+    this.fromApi.subscribe(key => {
+      if (!!this.cookie && !!key) {
+        if (this.cookie.version !== key.version) {
+          this.transferkeys.transferKey = key;
+          log('VERSION DIFFERENCE : write data in transferkey');
+        } else {
+          this.transferkeys.remove();
+          log('Versions are the same no need to transfer data');
+        }
+      } else if (!!key) {
+        this.transferkeys.transferKey = key;
+        log('NO COOKIE : write data in transferkey');
+      }
+    });
+  }
+
   public getAll(cache = false): void {
     if (this.platformService.isServer) {
-      this.getCookieOnServer();
-      this.fromApi.subscribe(key => {
-        log('version in cookie : ', this.cookie.version);
-        log('version form api : ', key.version);
-        if (this.cookie.version !== key.version) {
-          log('VERSION DIFFERENCE : write data in transferkey');
-          this.transferkeys.transferKey = key;
-        } else {
-          log('remove transferkey');
-          this.transferkeys.remove();
-        }
-      });
+      this.handleOnServer();
     } else if (this.transferkeys.hasTransferKey) {
       const transferkey = this.transferkeys.transferKey;
       this.store.dispatch(StoreActions.success(transferkey));
