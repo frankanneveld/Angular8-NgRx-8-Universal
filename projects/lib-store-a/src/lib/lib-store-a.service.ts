@@ -7,6 +7,8 @@ import { State } from '../../store/reducers';
 import { Transferkeys } from '../../store/transferkeys';
 import { PlatformService } from '../../../main/src/app/services/platform.service';
 import { LocalDataStorage } from '../../../main/src/app/services/localDataStorage';
+import { take } from 'rxjs/operators';
+import { CookieService } from 'ngx-cookie-service';
 
 
 export const forFeatureName = 'STORE-A';
@@ -30,7 +32,7 @@ export class StoreService {
   public get fromApi(): Observable<any> {
     const url = 'https://raw.githubusercontent.com/frankanneveld/FakeApi/master/componentA.json';
     log(url); // TODO: Clean up later
-    return this.http.get(url);
+    return this.http.get(url).pipe(take(1));
   }
 
   public get allSubscription(): Observable<any> {
@@ -39,6 +41,7 @@ export class StoreService {
 
   constructor(private platformService: PlatformService,
               private transferkeys: Transferkeys,
+              private cookieService: CookieService,
               private http: HttpClient,
               private injector: Injector,
               private localDataStorage: LocalDataStorage,
@@ -50,25 +53,21 @@ export class StoreService {
   public setCached(data: any) {
     this.localDataStorage.setCachedItem( forFeatureName, data).subscribe( res => {
       log('Subscribtion from setCache', res);
+      log('version', res.version);
+      this.cookieService.set(forFeatureName, JSON.stringify({version: (res.version || null)}));
       this.localDataStorage.getLength().subscribe( l => {
         log('Cache length', l);
       });
     });
   }
 
-  private setCookieVersion() {
-    // Writes the endpoint version into the cookie;
-  }
 
   private getCookieOnServer() {
     const req = this.injector.get('request');
     if (!!req && req.cookie) {
       Object.keys(req.cookie).forEach( c => {
         if (c === forFeatureName) {
-          // console.log('Request \x1b[1m Server Cookie :  \x1b[0m');
-          // console.log( JSON.parse(req.cookie[forFeatureName]));
           this.cookie = JSON.parse(req.cookie[forFeatureName]) || null;
-          // return JSON.parse(req.cookie[forFeatureName]);
         }
       });
     }
@@ -78,19 +77,15 @@ export class StoreService {
     if (this.platformService.isServer) {
       this.getCookieOnServer();
       this.fromApi.subscribe(key => {
-        // console.log(this.cookie.date);
-        // console.log(this.cookie.arr);
-        console.log('version in cookie : ', this.cookie.version);
-        console.log('version form api : ', key.version);
-
+        log('version in cookie : ', this.cookie.version);
+        log('version form api : ', key.version);
         if (this.cookie.version !== key.version) {
-          console.log('write data in transferkey');
+          log('VERSION DIFFERENCE : write data in transferkey');
           this.transferkeys.transferKey = key;
         } else {
-          console.log('remove transferkey');
+          log('remove transferkey');
           this.transferkeys.remove();
         }
-
       });
     } else if (this.transferkeys.hasTransferKey) {
       const transferkey = this.transferkeys.transferKey;
