@@ -9,7 +9,7 @@ As we navigate trough an application each url path has one or more endpoints to 
 some data doesn't change that often and doesn't need to be called every time when the user navigate. The idea behind this concept, is to manage data what already is on the client, 
 in other words: “What goes to the client stays at the client” - until differences in version are detected.
 
-The application it self only gets the data from the NgRx Store, this **“single source of trough”** updates automatically when newer versions are available on the API.
+The application it self only gets the data from the NgRx Store, this **“single source of truth”** updates automatically when newer versions are available on the API.
 
 When building and serving for SSR a cookie is send from the client to the server, the cookie contains the version and if the data on the API is newer the data is transferred via a transfer state key. If the data is the same is doesn't send the data again. And if there is no cookie with a version than the data is also transferred.
 
