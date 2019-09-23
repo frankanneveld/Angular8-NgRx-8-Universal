@@ -1,10 +1,16 @@
 import {Injectable} from '@angular/core';
 import {makeStateKey, TransferState} from '@angular/platform-browser';
+import { STORE_A_TRANSFER_KEY } from '../../lib-store-a/store/transferkeys';
 
 export const STORE_C_TRANSFER_KEY = makeStateKey<any>('STORE_C_TRANSFER_KEY');
 
 @Injectable()
 export class Transferkeys {
+
+  public remove() {
+    this.transferState.remove(STORE_A_TRANSFER_KEY);
+  }
+
   public get hasTransferKey(): boolean {
     return this.transferState.hasKey(STORE_C_TRANSFER_KEY);
   }

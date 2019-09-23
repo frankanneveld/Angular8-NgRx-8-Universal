@@ -78,14 +78,14 @@ export class StoreService {
       if (!!this.cookie && !!key) {
         if (this.cookie.version !== key.version) {
           this.transferkeys.transferKey = key;
-          log('VERSION DIFFERENCE : write data in transferkey');
+          log('\x1b[36m%s\x1b[0m', forFeatureName + ':: VERSION DIFFERENCE : write data in transferkey', '\x1b[0m');
         } else {
           this.transferkeys.remove();
-          log('Versions are the same no need to transfer data');
+          log('\x1b[1m', forFeatureName + ':: Versions are the same no need to transfer data', '\x1b[0m');
         }
       } else if (!!key) {
         this.transferkeys.transferKey = key;
-        log('NO COOKIE : write data in transferkey');
+        log('\x1b[31m', forFeatureName + ':: NO COOKIE : write data in transferkey', '\x1b[0m');
       }
     });
   }
