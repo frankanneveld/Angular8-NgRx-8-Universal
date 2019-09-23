@@ -3,7 +3,7 @@ Boilerplate for Angular 8 with Universal-SSR and NgRx8 with Local Caching
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.1.0.
 
-##Introduction:
+## Introduction:
 
 As we navigate trough an application each url path has one or more endpoints to call,
 some data doesn't change that often and doesn't need to be called every time when the user navigate. The idea behind this concept, is to manage data what already is on the client, 
