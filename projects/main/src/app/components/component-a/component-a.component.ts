@@ -8,10 +8,13 @@ import { StoreService as ServiceA } from '@lib-store-a';
 })
 export class ComponentAComponent implements OnInit {
   public result: any;
+
   constructor(public serviceA: ServiceA) {
     serviceA.allSubscription.subscribe( res => {
       this.result = res;
     });
   }
-  ngOnInit() {}
+  ngOnInit() {
+
+  }
 }

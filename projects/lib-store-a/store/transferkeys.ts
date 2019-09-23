@@ -5,6 +5,11 @@ export const STORE_A_TRANSFER_KEY = makeStateKey<string>('STORE_A_TRANSFER_KEY')
 
 @Injectable()
 export class Transferkeys {
+
+  public remove() {
+    this.transferState.remove(STORE_A_TRANSFER_KEY);
+  }
+
   public get hasTransferKey(): boolean {
     return this.transferState.hasKey(STORE_A_TRANSFER_KEY);
   }

@@ -14,7 +14,7 @@ import * as uuid from 'uuid';
 
 const rootConfig: NgForageOptions = {
   name: 'user_storage',
-  cacheTime: 30000,
+  cacheTime: (30000 * 30000),
   driver: [
     Driver.INDEXED_DB,
     Driver.WEB_SQL,
