@@ -15,6 +15,7 @@ When building and serving for SSR a cookie is send from the client to the server
 
 When serving while developing with `ng serve` the application isn't use any cookies.
 As the data always is stored in the (IndexDB, WebSQL, LocalStore) we can use the cached data to rehydrate the NgRx-Store. For each API-Endpoint we can adjust the caching time and also if there is any need for caching. 
+
 Anyone who wants to help getting this document better or have any good ideas, I would appreciate it a lot. 
 
 ## Installing
