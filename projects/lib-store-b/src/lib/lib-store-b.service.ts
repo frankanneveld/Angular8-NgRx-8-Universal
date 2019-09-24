@@ -30,7 +30,7 @@ export class StoreService {
   private cookie: any;
 
   public get fromApi(): Observable<any> {
-    const url = 'https://raw.githubusercontent.com/frankanneveld/FakeApi/master/componentB.json';
+    const url = 'http://localhost:3000/component-b';
     log(url); // TODO: Clean up later
     return this.http.get(url).pipe(take(1));
   }
