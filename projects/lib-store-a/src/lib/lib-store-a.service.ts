@@ -1,13 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { createAction, createFeatureSelector, createSelector, props, select, Store } from '@ngrx/store';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { State } from '../../store/reducers';
 import { Transferkeys } from '../../store/transferkeys';
 import { PlatformService } from '../../../main/src/app/services/platform.service';
 import { LocalDataStorage } from '../../../main/src/app/services/localDataStorage';
-import { take } from 'rxjs/operators';
+import { map, mergeMap, take, tap } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
 
 
@@ -30,9 +30,19 @@ export class StoreService {
   private cookie: any;
 
   public get fromApi(): Observable<any> {
+
+    // const  headers = new  HttpHeaders().set('If-Match', '*');
+    // const  headers = new  HttpHeaders().append()
+    const  headers = {};
+
     const url = 'https://raw.githubusercontent.com/frankanneveld/FakeApi/master/componentA.json';
     log(url); // TODO: Clean up later
-    return this.http.get(url).pipe(take(1));
+    return this.http.get(url, {headers, observe: 'response'}).pipe(
+      take(1),
+      // tap( resp => log('If-Match', resp.headers.get('If-Match')))
+      tap( resp => log('If-Match', resp.headers.keys()))
+      // tap( resp => log(resp))
+    ).pipe(map( res => res.body));
   }
 
   public get allSubscription(): Observable<any> {
@@ -52,11 +62,11 @@ export class StoreService {
 
   public setCached(data: any) {
     this.localDataStorage.setCachedItem( forFeatureName, data).subscribe( res => {
-      log('Subscribtion from setCache', res);
+      // log('Subscribtion from setCache', res);
       this.cookieService.set(forFeatureName, JSON.stringify({version: (res.version || null)}));
-      log('version', JSON.parse(this.cookieService.get(forFeatureName)).version);
+      log(forFeatureName + '| version', JSON.parse(this.cookieService.get(forFeatureName)).version);
       this.localDataStorage.getLength().subscribe( l => {
-        log('Cache length', l);
+        // log('Cache length', l);
       });
     });
   }

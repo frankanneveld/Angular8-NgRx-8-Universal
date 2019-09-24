@@ -62,7 +62,7 @@ export class LocalDataStorage {
         this.cache.configure(rootConfig);
         from(this.cache.ready()).pipe(catchError(err => of(console.log(err)))).subscribe(() => {
           console.log('Ready with localforage driver: ', this.cache.activeDriver);
-          this.setCachedItem('uuid', uuid.v4());
+          this.setCachedItem('store_id', uuid.v4());
           resolve(true);
         });
       } else {
