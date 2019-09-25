@@ -1,13 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { createAction, createFeatureSelector, createSelector, props, select, Store } from '@ngrx/store';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { State } from '../../store/reducers';
 import { Transferkeys } from '../../store/transferkeys';
 import { PlatformService } from '../../../main/src/app/services/platform.service';
 import { LocalDataStorage } from '../../../main/src/app/services/localDataStorage';
-import { take } from 'rxjs/operators';
+import { map, take, tap } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
 
 
@@ -24,15 +24,26 @@ export class StoreSelector {
   static hasData  = createSelector(StoreSelector.getState, (state: State) => !!state.keys);
 }
 
+export interface StoreServiceInterface {
+  getAll(cache: boolean): void;
+  getOne(id: number): void;
+}
+
 @Injectable()
-export class StoreService {
+export class StoreService implements StoreServiceInterface {
   private hasDataInStore: boolean;
   private cookie: any;
 
   public get fromApi(): Observable<any> {
     const url = 'http://localhost:3000/component-c';
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('If-Match', !!this.cookie ? this.cookie.etag : '*');
     log(url); // TODO: Clean up later
-    return this.http.get(url).pipe(take(1));
+    return this.http.get(url, {headers, observe: 'response'}).pipe(
+      map(res => ({body: res.body, etag: res.headers.get('ETag')})),
+      take(1)
+    );
   }
 
   public get allSubscription(): Observable<any> {
@@ -46,18 +57,17 @@ export class StoreService {
               private injector: Injector,
               private localDataStorage: LocalDataStorage,
               private store: Store<any>) {
-    this.store.pipe(select(StoreSelector.hasData)).subscribe( has => this.hasDataInStore = has);
     if (platformService.isServer) this.getCookieOnServer();
+    if (platformService.isBrowser) this.store.pipe(select(StoreSelector.hasData)).subscribe( has => this.hasDataInStore = has);
   }
 
   public setCached(data: any) {
     this.localDataStorage.setCachedItem( forFeatureName, data).subscribe( res => {
-      log('Subscribtion from setCache', res);
-      this.cookieService.set(forFeatureName, JSON.stringify({version: (res.version || null)}));
-      log('version', JSON.parse(this.cookieService.get(forFeatureName)).version);
-      this.localDataStorage.getLength().subscribe( l => {
-        log('Cache length', l);
-      });
+      // log('Subscribtion from setCache', res);
+      this.cookieService.set(forFeatureName, JSON.stringify({version: (res.body.version || null), etag: res.etag}));
+      log(forFeatureName + '| version', JSON.parse(this.cookieService.get(forFeatureName)).version);
+      log(forFeatureName + '| ETag', JSON.parse(this.cookieService.get(forFeatureName)).etag);
+      // this.localDataStorage.getLength().subscribe( l => log('Cache length', l));
     });
   }
 
@@ -76,16 +86,18 @@ export class StoreService {
   private handleOnServer() {
     this.fromApi.subscribe(key => {
       if (!!this.cookie && !!key) {
-        if (this.cookie.version !== key.version) {
+        console.log(this.cookie.etag , ' : ', key.etag);
+        console.log(this.cookie.version , ' : ', key.body.version);
+        if (this.cookie.etag !== key.etag) {
           this.transferkeys.transferKey = key;
-          log('\x1b[36m%s\x1b[0m', forFeatureName + ':: VERSION DIFFERENCE : write data in transferkey', '\x1b[0m');
+          log('\x1b[36m%s\x1b[0m', forFeatureName + ':: ETAG DIFFERENCE : API response send to transferkey', '\x1b[0m');
         } else {
           this.transferkeys.remove();
-          log('\x1b[1m', forFeatureName + ':: Versions are the same no need to transfer data', '\x1b[0m');
+          log('\x1b[1m', forFeatureName + ':: EQUAL ETAGS : no need to transfer data', '\x1b[0m');
         }
       } else if (!!key) {
         this.transferkeys.transferKey = key;
-        log('\x1b[31m', forFeatureName + ':: NO COOKIE : write data in transferkey', '\x1b[0m');
+        log('\x1b[31m', forFeatureName + ':: DEFAULT : API response send to transferkey', '\x1b[0m');
       }
     });
   }
@@ -104,6 +116,13 @@ export class StoreService {
       });
     }
   }
+
+  public getOne(id: number): void {
+    if (this.platformService.isBrowser) {
+
+    }
+  }
 }
 
 const log = console.log;
+

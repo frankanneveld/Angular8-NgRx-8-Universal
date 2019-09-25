@@ -26,6 +26,7 @@ export class StoreSelector {
 
 export interface StoreServiceInterface {
   getAll(cache: boolean): void;
+  getOne(id: number): void;
 }
 
 @Injectable()
@@ -33,15 +34,14 @@ export class StoreService implements StoreServiceInterface {
   private hasDataInStore: boolean;
   private cookie: any;
 
-
   public get fromApi(): Observable<any> {
     const url = 'http://localhost:3000/component-a';
-    const  headers = new HttpHeaders().set('Content-Type', 'application/json').set('If-Match', !!this.cookie ? this.cookie.etag : '*');
-    // const headers = {};
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('If-Match', !!this.cookie ? this.cookie.etag : '*');
     log(url); // TODO: Clean up later
     return this.http.get(url, {headers, observe: 'response'}).pipe(
-      map( res => ({body: res.body, etag: res.headers.get('ETag')})),
-      // tap( r => log('Response ETag : ', r.etag)),
+      map(res => ({body: res.body, etag: res.headers.get('ETag')})),
       take(1)
     );
   }
@@ -63,11 +63,11 @@ export class StoreService implements StoreServiceInterface {
 
   public setCached(data: any) {
     this.localDataStorage.setCachedItem( forFeatureName, data).subscribe( res => {
-      log('Subscribtion from setCache', res);
+      // log('Subscribtion from setCache', res);
       this.cookieService.set(forFeatureName, JSON.stringify({version: (res.body.version || null), etag: res.etag}));
       log(forFeatureName + '| version', JSON.parse(this.cookieService.get(forFeatureName)).version);
       log(forFeatureName + '| ETag', JSON.parse(this.cookieService.get(forFeatureName)).etag);
-      this.localDataStorage.getLength().subscribe( l => log('Cache length', l));
+      // this.localDataStorage.getLength().subscribe( l => log('Cache length', l));
     });
   }
 
@@ -114,6 +114,12 @@ export class StoreService implements StoreServiceInterface {
         const actions = items ? StoreActions.success(items) : StoreActions.getAll();
         this.store.dispatch(actions);
       });
+    }
+  }
+
+  public getOne(id: number): void {
+    if (this.platformService.isBrowser) {
+
     }
   }
 }

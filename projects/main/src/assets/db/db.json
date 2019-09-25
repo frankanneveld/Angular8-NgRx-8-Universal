@@ -2,7 +2,7 @@
   "component-a": {
     "name": "John",
     "lastname": "Doeg",
-    "version": "1.0.1",
+    "version": "1.0.10",
     "posts": [
       { "id": 1, "title": "Post 1" },
       { "id": 2, "title": "Post 2" },
@@ -19,7 +19,7 @@
   "component-b": {
     "name": "John",
     "lastname": "Doe",
-    "version": "1.0.2",
+    "version": "1.0.20",
     "profile": {
       "name": "Component B"
     }
