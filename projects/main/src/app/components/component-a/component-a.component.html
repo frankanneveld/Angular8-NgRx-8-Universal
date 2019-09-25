@@ -1,4 +1,4 @@
 <pre *ngIf="result">
-  <h3 [innerHTML]="result.version"></h3>
-  {{result | json}}
+  <h3 [innerHTML]="result.body.version"></h3>
+  {{result.body | json}}
 </pre>

@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "ssr": "npm run build:ssr && npm run serve:ssr",
+    "db": "json-server --watch ./projects/main/src/assets/db/db.json",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

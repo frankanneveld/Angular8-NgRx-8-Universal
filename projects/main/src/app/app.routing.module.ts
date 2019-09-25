@@ -9,6 +9,7 @@ import { StoreService as StoreA } from '@lib-store-a';
 import { StoreService as StoreB } from '@lib-store-b';
 import { StoreService as StoreC } from '@lib-store-c';
 
+export type StoreType = StoreA | StoreB | StoreC;
 
 // TODO: make data cacheable with flag
 // data: {
@@ -57,7 +58,7 @@ export class AppRoutingModule {
       mergeMap(r => r.data)).subscribe((data) => {
       if (!!data && data.preload) {
         data.preload.forEach(s => {
-          const store = this.injector.get(s);
+          const store: StoreType = this.injector.get(s);
           store.getAll(true);
         });
       }

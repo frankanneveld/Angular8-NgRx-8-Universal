@@ -1,7 +1,7 @@
 {
   "component-a": {
-    "name": "Frank",
-    "lastname": "Anneveld",
+    "name": "John",
+    "lastname": "Doeg",
     "version": "1.0.1",
     "posts": [
       { "id": 1, "title": "Post 1" },
