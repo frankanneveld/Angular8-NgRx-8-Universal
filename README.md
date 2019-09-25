@@ -41,7 +41,7 @@ Run `$ npm run ssr` for building en serving local on `http://localhost:4000/`
 
 `$ npm install -g json-server` or just install json-server locally.
 
-Run `$ npm run db` to startup local json server on port 3000.
+Run `$ npm run db` to startup local json server on `http://localhost:3000/`.
 
 
 
