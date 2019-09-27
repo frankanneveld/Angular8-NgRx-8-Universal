@@ -38,7 +38,7 @@ export class StoreService implements StoreServiceInterface {
     const url = 'http://localhost:3000/component-c';
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
-      .set('If-Match', !!this.cookie ? this.cookie.etag : '*');
+      .set('If-Match', (!!this.cookie && this.cookie.etag) ? this.cookie.etag : '*');
     log(url); // TODO: Clean up later
     return this.http.get(url, {headers, observe: 'response'}).pipe(
       map(res => ({body: res.body, etag: res.headers.get('ETag')})),
@@ -77,7 +77,7 @@ export class StoreService implements StoreServiceInterface {
     if (!!req && req.cookie) {
       Object.keys(req.cookie).forEach( c => {
         if (c === forFeatureName) {
-          this.cookie = JSON.parse(req.cookie[forFeatureName]) || null;
+          this.cookie = JSON.parse(req.cookie[forFeatureName]);
         }
       });
     }
