@@ -1,3 +1,5 @@
+// extra info : https://github.com/angular/universal/tree/master/modules/express-engine
+
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { createAction, createFeatureSelector, createSelector, props, select, Store } from '@ngrx/store';
